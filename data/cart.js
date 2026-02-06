@@ -1,1 +1,1 @@
-const cart = new Map();
+export const cart = new Map();
