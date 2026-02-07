@@ -35,3 +35,13 @@ function loadCart() {
         return new Map();
     }
 }
+
+export function calcCartQuantity() {
+    let totalQuantity = 0;
+    
+    cart.forEach((value) => {
+        totalQuantity += value;
+    })
+
+    return totalQuantity;
+}

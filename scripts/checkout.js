@@ -1,4 +1,4 @@
-import { cart, removeFromCart } from "../data/cart.js";
+import { cart, removeFromCart, calcCartQuantity } from "../data/cart.js";
 import { products } from "../data/products.js";
 
 let cartSummaryHTML = ''
@@ -16,7 +16,6 @@ cart.forEach((value, key) => {
         <div class="cart-item-container js-cart-container-${matchingProduct.id}">
             <div class="delivery-date">
                 Delivery date: Tuesday, June 21
-
             </div>
 
             <div class="cart-item-details-grid">
@@ -93,5 +92,14 @@ document.querySelectorAll(".js-delete-link")
         link.addEventListener('click', () => {
             removeFromCart(link.dataset.productId);
             document.querySelector(`.js-cart-container-${link.dataset.productId}`).remove();
+            updateQtn();
         })
     });
+
+const qtnHeader = document.querySelector(".js-middle-cart-qtn");
+
+function updateQtn() {
+    qtnHeader.textContent = `${calcCartQuantity()} items`;
+}
+
+updateQtn()
