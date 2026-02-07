@@ -7,3 +7,7 @@ export function addToCart(productId) {
         cart.set(productId, 1)
     }
 }
+
+export function removeFromCart(productId) {
+    cart.delete(productId);
+}
