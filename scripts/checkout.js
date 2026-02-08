@@ -9,6 +9,8 @@ const qtnHeader = document.querySelector(".js-middle-cart-qtn");
 let itemsSummaryQtn = document.getElementById("items-summary-row-qtn");
 let cartSummaryHTML = '';
 
+const today = dayjs();
+
 cart.forEach((productData, key) => {
     let matchingProduct;
 
@@ -20,8 +22,8 @@ cart.forEach((productData, key) => {
 
     cartSummaryHTML += `
         <div class="cart-item-container js-cart-container-${matchingProduct.id}">
-            <div class="delivery-date">
-                Delivery date: Tuesday, June 21
+            <div class="delivery-date js-delivery-date-${matchingProduct.id}">
+                Delivery date: ${getDateString(cart.get(matchingProduct.id).deliveryOptionId)}
             </div>
 
             <div class="cart-item-details-grid">
@@ -60,12 +62,10 @@ cart.forEach((productData, key) => {
 })
 
 function deliveryOptionsHTML(matchingProduct, deliveryOptionId) {
-    const today = dayjs();
     let html = ``;
 
     deliveryOptions.forEach((deliveryOption) => {
-        const deliveryDate = today.add(deliveryOption.deliveryDays, 'days');
-        const dateString = deliveryDate.format('dddd, MMMM D');
+        const dateString = getDateString(deliveryOption.id);
         const priceString = deliveryOption.price
         === 0 
             ? 'FREE Shipping' 
@@ -99,6 +99,8 @@ deliveryOptionButtons.forEach((button) => {
         const productId = event.target.name.split("delivery-option-")[1];
         cart.get(productId).deliveryOptionId = Number(event.target.dataset.deliveryId);
         
+        let itemDeliveryDate = document.querySelector(`.js-delivery-date-${productId}`);
+        itemDeliveryDate.textContent = `Delivery date: ${getDateString(cart.get(productId).deliveryOptionId)}`
         updateOrderSummary();
         saveToStorage();
     })
@@ -112,6 +114,7 @@ document.querySelectorAll(".js-delete-link")
             updateQtn();
         })
     });
+
 
 function updateQtn() {
     let qtn = calcCartQuantity();
@@ -138,5 +141,10 @@ function updateOrderSummary() {
     paymentSummaryMoney[1].textContent = `₨ ${shippingCost}`;
     paymentSummaryMoney[2].textContent = `₨ ${cartCost + shippingCost}`;
     paymentSummaryMoney[3].textContent = `₨ ${roundTo2((cartCost + shippingCost) * 0.1)}`;
-    paymentSummaryMoney[4].textContent = `₨ ${roundTo2((cartCost + shippingCost) * 1.1)}`;  
+    paymentSummaryMoney[4].textContent = `₨ ${roundTo2((cartCost + shippingCost) * 1.1)}`;
+}
+
+function getDateString(deliveryOption) {
+    const deliveryDate = today.add(deliveryOptions.get(Number(deliveryOption)).deliveryDays, 'days');
+    return deliveryDate.format('dddd, MMMM D');
 }
