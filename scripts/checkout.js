@@ -1,7 +1,9 @@
-import { cart, removeFromCart, calcCartQuantity } from "../data/cart.js";
+import { cart, removeFromCart, calcCartQuantity, calcCartCost } from "../data/cart.js";
 import { products } from "../data/products.js";
+import { roundTo2 } from "./utils/Math.js";
 
-let cartSummaryHTML = ''
+let itemsSummaryQtn = document.getElementById("items-summary-row-qtn");
+let cartSummaryHTML = '';
 
 cart.forEach((value, key) => {
     let matchingProduct;
@@ -47,7 +49,7 @@ cart.forEach((value, key) => {
                     Choose a delivery option:
                 </div>
                 <div class="delivery-option">
-                    <input type="radio" checked="" class="delivery-option-input" name="delivery-option-${matchingProduct.id}">
+                    <input type="radio" checked="" class="delivery-option-input" name="delivery-option-${matchingProduct.id}" data-shipping-cost='0'>
                     <div>
                         <div class="delivery-option-date">
                             Tuesday, June 21
@@ -58,24 +60,24 @@ cart.forEach((value, key) => {
                     </div>
                 </div>
                 <div class="delivery-option">
-                    <input type="radio" class="delivery-option-input" name="delivery-option-${matchingProduct.id}">
+                    <input type="radio" class="delivery-option-input" name="delivery-option-${matchingProduct.id}" data-shipping-cost='49'>
                     <div>
                         <div class="delivery-option-date">
                             Wednesday, June 15
                         </div>
                         <div class="delivery-option-price">
-                            $4.99 - Shipping
+                            ₨ 49 - Shipping
                         </div>
                     </div>
                 </div>
                 <div class="delivery-option">
-                    <input type="radio" class="delivery-option-input" name="delivery-option-${matchingProduct.id}">
+                    <input type="radio" class="delivery-option-input" name="delivery-option-${matchingProduct.id}" data-shipping-cost='99'>
                     <div>
                         <div class="delivery-option-date">
                             Monday, June 13
                         </div>
                         <div class="delivery-option-price">
-                            $9.99 - Shipping
+                            ₨ 99 - Shipping
                         </div>
                     </div>
                 </div>
@@ -86,6 +88,14 @@ cart.forEach((value, key) => {
 })
 
 document.querySelector('.order-summary').innerHTML = cartSummaryHTML;
+
+let deliveryOptionButtons = document.querySelectorAll('.delivery-option-input');
+
+deliveryOptionButtons.forEach((button) => {
+    button.addEventListener('change', () => {
+        updateOrderSummary();
+    })
+})
 
 document.querySelectorAll(".js-delete-link")
     .forEach((link) => {
@@ -99,7 +109,29 @@ document.querySelectorAll(".js-delete-link")
 const qtnHeader = document.querySelector(".js-middle-cart-qtn");
 
 function updateQtn() {
-    qtnHeader.textContent = `${calcCartQuantity()} items`;
+    let qtn = calcCartQuantity();
+
+    qtnHeader.textContent = `${qtn} items`;
+    itemsSummaryQtn.textContent = `Items (${qtn})`;
+    updateOrderSummary();
 }
 
 updateQtn()
+
+function updateOrderSummary() {
+    let paymentSummaryMoney = document.getElementsByClassName("payment-summary-money");
+    let cartCost = calcCartCost();
+
+    let shippingCost = 0;
+
+    cart.forEach((qtn, productId) => {
+        let selectedRadio = document.querySelector(`input[name="delivery-option-${productId}"]:checked`);
+        shippingCost += Number(selectedRadio.dataset.shippingCost);
+    })
+
+    paymentSummaryMoney[0].textContent = `₨ ${cartCost}`;
+    paymentSummaryMoney[1].textContent = `₨ ${shippingCost}`;
+    paymentSummaryMoney[2].textContent = `₨ ${cartCost + shippingCost}`;
+    paymentSummaryMoney[3].textContent = `₨ ${roundTo2((cartCost + shippingCost) * 0.1)}`;
+    paymentSummaryMoney[4].textContent = `₨ ${roundTo2((cartCost + shippingCost) * 1.1)}`;  
+}

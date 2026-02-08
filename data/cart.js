@@ -1,10 +1,16 @@
+import { products } from "./products.js";
+
+let cartQtn = document.body.querySelector(".cart-quantity");
+
 export const cart = loadCart();
 
 export function addToCart(productId) {
+    let qtn = document.getElementById(`qtn-${productId}`).value;
+
     if(cart.has(productId)){
-        cart.set(productId, cart.get(productId)+1)
+        cart.set(productId, cart.get(productId)+Number(qtn))
     }else{
-        cart.set(productId, 1)
+        cart.set(productId, Number(qtn))
     }
 
     saveToStorage()
@@ -44,4 +50,29 @@ export function calcCartQuantity() {
     })
 
     return totalQuantity;
+}
+
+export function updateCartQtn() {
+    let cartQuantity = 0;
+    cart.forEach((value) => 
+        cartQuantity += value
+    )
+
+    cartQtn.innerText = cartQuantity ? cartQuantity : '';
+}
+
+export function calcCartCost() {
+    let totalCost = 0;
+    cart.forEach((qtn, id) => {
+        let matchingProductPrice;
+        products.forEach((product) => {
+            if(product.id == id) {
+                matchingProductPrice = product.price;
+            }
+        })
+
+        totalCost += matchingProductPrice * qtn;
+    })
+
+    return totalCost;
 }

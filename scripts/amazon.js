@@ -1,8 +1,9 @@
-import { cart, addToCart} from '../data/cart.js'
+import { addToCart, updateCartQtn} from '../data/cart.js'
 import { products } from '../data/products.js';
 
+updateCartQtn()
+
 let productGrid = document.body.querySelector(".products-grid");
-let cartQtn = document.body.querySelector(".cart-quantity");
 
 let productsHTML = ''
 
@@ -31,7 +32,7 @@ products.forEach((product) => {
         </div>
 
         <div class="product-quantity-container">
-            <select>
+            <select id="qtn-${product.id}">
                 <option selected value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -59,15 +60,6 @@ products.forEach((product) => {
 })
 
 productGrid.innerHTML = productsHTML;
-
-function updateCartQtn() {
-    let cartQuantity = 0;
-    cart.forEach((value) => 
-        cartQuantity += value
-    )
-
-    cartQtn.innerText = cartQuantity;
-}
 
 document.querySelectorAll(".js-add-to-cart")
     .forEach((button) => {
