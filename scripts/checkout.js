@@ -96,6 +96,9 @@ let deliveryOptionButtons = document.querySelectorAll('.delivery-option-input');
 
 deliveryOptionButtons.forEach((button) => {
     button.addEventListener('change', (event) => {
+        const productId = event.target.name.split("delivery-option-")[1];
+        cart.get(productId).deliveryOptionId = Number(event.target.dataset.deliveryId);
+        
         updateOrderSummary();
         saveToStorage();
     })
