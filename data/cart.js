@@ -8,9 +8,15 @@ export function addToCart(productId) {
     let qtn = document.getElementById(`qtn-${productId}`).value;
 
     if(cart.has(productId)){
-        cart.set(productId, cart.get(productId)+Number(qtn))
+        cart.set(productId, {
+            quantity: cart.get(productId).quantity + Number(qtn),
+            deliveryOptionId: cart.get(productId).deliveryOptionId
+        })
     }else{
-        cart.set(productId, Number(qtn))
+        cart.set(productId, {
+            quantity: Number(qtn), 
+            deliveryOptionId: 1
+        })
     }
 
     saveToStorage()
@@ -21,7 +27,7 @@ export function removeFromCart(productId) {
     saveToStorage();
 }
 
-function saveToStorage() {
+export function saveToStorage() {
     localStorage.setItem('cart', JSON.stringify(Array.from(cart.entries())));
 }
 
@@ -45,8 +51,8 @@ function loadCart() {
 export function calcCartQuantity() {
     let totalQuantity = 0;
     
-    cart.forEach((value) => {
-        totalQuantity += value;
+    cart.forEach((productData) => {
+        totalQuantity += productData.quantity;
     })
 
     return totalQuantity;
@@ -54,8 +60,8 @@ export function calcCartQuantity() {
 
 export function updateCartQtn() {
     let cartQuantity = 0;
-    cart.forEach((value) => 
-        cartQuantity += value
+    cart.forEach((productData) => 
+        cartQuantity += productData.quantity
     )
 
     cartQtn.innerText = cartQuantity ? cartQuantity : '';
@@ -63,7 +69,7 @@ export function updateCartQtn() {
 
 export function calcCartCost() {
     let totalCost = 0;
-    cart.forEach((qtn, id) => {
+    cart.forEach((productData, id) => {
         let matchingProductPrice;
         products.forEach((product) => {
             if(product.id == id) {
@@ -71,7 +77,7 @@ export function calcCartCost() {
             }
         })
 
-        totalCost += matchingProductPrice * qtn;
+        totalCost += matchingProductPrice * productData.quantity;
     })
 
     return totalCost;
