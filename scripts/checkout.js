@@ -1,15 +1,10 @@
-import { cart, removeFromCart, calcCartQuantity, calcCartCost, saveToStorage } from "../data/cart.js";
+import { cart, removeFromCart, saveToStorage } from "../data/cart.js";
 import { products } from "../data/products.js";
-import { roundTo2 } from "./utils/Math.js";
-import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js'
+import { getDateString } from "./utils/Math.js";
 import { deliveryOptions } from "../data/deliveryOptions.js";
+import { updateOrderSummary, updateQtn } from "./checkout/orderSummary.js";
 
-
-const qtnHeader = document.querySelector(".js-middle-cart-qtn");
-let itemsSummaryQtn = document.getElementById("items-summary-row-qtn");
 let cartSummaryHTML = '';
-
-const today = dayjs();
 
 cart.forEach((productData, key) => {
     let matchingProduct;
@@ -23,7 +18,7 @@ cart.forEach((productData, key) => {
     cartSummaryHTML += `
         <div class="cart-item-container js-cart-container-${matchingProduct.id}">
             <div class="delivery-date js-delivery-date-${matchingProduct.id}">
-                Delivery date: ${getDateString(cart.get(matchingProduct.id).deliveryOptionId)}
+                Delivery date: ${getDateString(deliveryOptions, cart.get(matchingProduct.id).deliveryOptionId)}
             </div>
 
             <div class="cart-item-details-grid">
@@ -65,7 +60,7 @@ function deliveryOptionsHTML(matchingProduct, deliveryOptionId) {
     let html = ``;
 
     deliveryOptions.forEach((deliveryOption) => {
-        const dateString = getDateString(deliveryOption.id);
+        const dateString = getDateString(deliveryOptions, deliveryOption.id);
         const priceString = deliveryOption.price
         === 0 
             ? 'FREE Shipping' 
@@ -100,8 +95,8 @@ deliveryOptionButtons.forEach((button) => {
         cart.get(productId).deliveryOptionId = Number(event.target.dataset.deliveryId);
         
         let itemDeliveryDate = document.querySelector(`.js-delivery-date-${productId}`);
-        itemDeliveryDate.textContent = `Delivery date: ${getDateString(cart.get(productId).deliveryOptionId)}`
-        updateOrderSummary();
+        itemDeliveryDate.textContent = `Delivery date: ${getDateString(deliveryOptions, cart.get(productId).deliveryOptionId)}`
+        updateOrderSummary(deliveryOptions);
         saveToStorage();
     })
 })
@@ -115,36 +110,4 @@ document.querySelectorAll(".js-delete-link")
         })
     });
 
-
-function updateQtn() {
-    let qtn = calcCartQuantity();
-
-    qtnHeader.textContent = `${qtn} items`;
-    itemsSummaryQtn.textContent = `Items (${qtn})`;
-    updateOrderSummary();
-}
-
 updateQtn()
-
-function updateOrderSummary() {
-    let paymentSummaryMoney = document.getElementsByClassName("payment-summary-money");
-    let cartCost = calcCartCost();
-
-    let shippingCost = 0;
-
-    cart.forEach((productData, productId) => {
-        let selectedRadio = document.querySelector(`input[name="delivery-option-${productId}"]:checked`);
-        shippingCost += Number(deliveryOptions.get(Number(selectedRadio.dataset.deliveryId)).price);
-    })
-
-    paymentSummaryMoney[0].textContent = `₨ ${cartCost}`;
-    paymentSummaryMoney[1].textContent = `₨ ${shippingCost}`;
-    paymentSummaryMoney[2].textContent = `₨ ${cartCost + shippingCost}`;
-    paymentSummaryMoney[3].textContent = `₨ ${roundTo2((cartCost + shippingCost) * 0.1)}`;
-    paymentSummaryMoney[4].textContent = `₨ ${roundTo2((cartCost + shippingCost) * 1.1)}`;
-}
-
-function getDateString(deliveryOption) {
-    const deliveryDate = today.add(deliveryOptions.get(Number(deliveryOption)).deliveryDays, 'days');
-    return deliveryDate.format('dddd, MMMM D');
-}

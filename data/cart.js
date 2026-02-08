@@ -66,19 +66,3 @@ export function updateCartQtn() {
 
     cartQtn.innerText = cartQuantity ? cartQuantity : '';
 }
-
-export function calcCartCost() {
-    let totalCost = 0;
-    cart.forEach((productData, id) => {
-        let matchingProductPrice;
-        products.forEach((product) => {
-            if(product.id == id) {
-                matchingProductPrice = product.price;
-            }
-        })
-
-        totalCost += matchingProductPrice * productData.quantity;
-    })
-
-    return totalCost;
-}
