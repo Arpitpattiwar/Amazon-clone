@@ -1,3 +1,4 @@
+import { updateQtn } from "../scripts/checkout/orderSummary.js";
 import { products } from "./products.js";
 
 let cartQtn = document.body.querySelector(".cart-quantity");
@@ -58,11 +59,14 @@ export function calcCartQuantity() {
     return totalQuantity;
 }
 
-export function updateCartQtn() {
-    let cartQuantity = 0;
-    cart.forEach((productData) => 
-        cartQuantity += productData.quantity
-    )
+export function updateTotalItems() {
+    let cartQuantity = calcCartQuantity();
 
     cartQtn.innerText = cartQuantity ? cartQuantity : '';
+}
+
+export function updateItemQtn(productId, qtn) {
+    cart.get(productId).quantity = qtn;
+    saveToStorage();
+    updateQtn();
 }

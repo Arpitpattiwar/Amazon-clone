@@ -1,4 +1,4 @@
-import { cart, removeFromCart, saveToStorage } from "../data/cart.js";
+import { cart, removeFromCart, saveToStorage, updateItemQtn } from "../data/cart.js";
 import { products } from "../data/products.js";
 import { getDateString } from "./utils/Math.js";
 import { deliveryOptions } from "../data/deliveryOptions.js";
@@ -16,7 +16,7 @@ cart.forEach((productData, key) => {
     })
 
     cartSummaryHTML += `
-        <div class="cart-item-container js-cart-container-${matchingProduct.id}">
+        <div class="cart-item-container js-cart-item-container-${matchingProduct.id}">
             <div class="delivery-date js-delivery-date-${matchingProduct.id}">
                 Delivery date: ${getDateString(deliveryOptions, cart.get(matchingProduct.id).deliveryOptionId)}
             </div>
@@ -33,14 +33,17 @@ cart.forEach((productData, key) => {
                 </div>
                 <div class="product-quantity">
                     <span>
-                    Quantity: <span class="quantity-label">${productData.quantity}</span>
+                        Quantity: <span class="quantity-label js-quantity-label-${matchingProduct.id}">${cart.get(matchingProduct.id).quantity}</span>
                     </span>
-                    <span class="update-quantity-link link-primary">
-                    Update
+                    <span class="update-quantity-link link-primary js-update-link" data-product-id="${matchingProduct.id}">
+                        Update
                     </span>
-                    <span class="delete-quantity-link link-primary js-delete-link"
-                    data-product-id=${matchingProduct.id}>
-                    Delete
+                    <input id="quantity-input-${matchingProduct.id}" class="quantity-input js-quantity-input-${matchingProduct.id}">
+                    <span class="save-quantity-link link-primary js-save-link" data-product-id="${matchingProduct.id}">
+                        Save
+                    </span>
+                    <span class="delete-quantity-link link-primary js-delete-link" data-product-id="${matchingProduct.id}">
+                        Delete
                     </span>
                 </div>
                 </div>
@@ -65,7 +68,7 @@ function deliveryOptionsHTML(matchingProduct, deliveryOptionId) {
         === 0 
             ? 'FREE Shipping' 
             : `₨ ${deliveryOption.price} - Shipping`;
-        
+
         html +=
             `
             <div class="delivery-option">
@@ -105,9 +108,48 @@ document.querySelectorAll(".js-delete-link")
     .forEach((link) => {
         link.addEventListener('click', () => {
             removeFromCart(link.dataset.productId);
-            document.querySelector(`.js-cart-container-${link.dataset.productId}`).remove();
+            document.querySelector(`.js-cart-item-container-${link.dataset.productId}`).remove();
             updateQtn();
         })
     });
 
 updateQtn()
+
+document.querySelectorAll('.js-update-link')
+    .forEach((link) => {
+        link.addEventListener('click', () => {
+            const productId = link.dataset.productId;
+
+            const container = document.querySelector(
+            `.js-cart-item-container-${productId}`
+        );
+        container.classList.add('is-editing-quantity');
+        });
+    }
+);
+
+document.querySelectorAll('.js-save-link')
+  .forEach((link) => {
+    link.addEventListener('click', () => {
+      const productId = link.dataset.productId;
+
+      const container = document.querySelector(
+        `.js-cart-item-container-${productId}`
+      );
+      container.classList.remove('is-editing-quantity');
+      
+      const quantityInput = document.querySelector(
+        `.js-quantity-input-${productId}`
+      );
+      const newQuantity = Number(quantityInput.value);
+      updateItemQtn(productId, newQuantity);
+
+      const quantityLabel = document.querySelector(
+        `.js-quantity-label-${productId}`
+      );
+      quantityLabel.innerHTML = newQuantity;
+
+      updateOrderSummary()
+    });
+  }
+);
