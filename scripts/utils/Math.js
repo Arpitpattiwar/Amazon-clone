@@ -2,7 +2,7 @@ import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js'
 
 let today = dayjs()
 
-export function roundTo2(num) {
+export function formatMoney(num) {
     return num.toFixed(2);
 }
 
