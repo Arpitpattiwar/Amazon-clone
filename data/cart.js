@@ -1,5 +1,5 @@
 import { updateQtn } from "../scripts/checkout/orderSummary.js";
-import { products } from "./products.js";
+import { products } from './products.js';
 
 let cartQtn = document.body.querySelector(".cart-quantity");
 
@@ -69,4 +69,8 @@ export function updateItemQtn(productId, qtn) {
     cart.get(productId).quantity = qtn;
     saveToStorage();
     updateQtn();
+}
+
+export function updateCartQtn() {
+    cartQtn.textContent = calcCartQuantity();
 }
