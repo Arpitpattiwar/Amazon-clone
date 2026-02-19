@@ -1,5 +1,4 @@
 import { updateQtn } from "../scripts/checkout/orderSummary.js";
-import { products } from './products.js';
 
 let cartQtn = document.body.querySelector(".cart-quantity");
 
@@ -32,7 +31,7 @@ export function saveToStorage() {
     localStorage.setItem('cart', JSON.stringify(Array.from(cart.entries())));
 }
 
-function loadCart() {
+export function loadCart() {
     try {
         if (typeof localStorage === 'undefined') {
             return new Map();
@@ -57,12 +56,6 @@ export function calcCartQuantity() {
     })
 
     return totalQuantity;
-}
-
-export function updateTotalItems() {
-    let cartQuantity = calcCartQuantity();
-
-    cartQtn.innerText = cartQuantity ? cartQuantity : '';
 }
 
 export function updateItemQtn(productId, qtn) {

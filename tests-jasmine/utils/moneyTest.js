@@ -1,4 +1,4 @@
-import { formatMoney } from "../scripts/utils/Math.js";
+import { formatMoney } from "../../scripts/utils/Math.js";
 
 describe('test suite: formatCurrency', () => {
     it('round to 2 decimal places', () => {
