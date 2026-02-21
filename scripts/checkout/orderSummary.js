@@ -6,9 +6,9 @@ import { calcCartCost } from './paymentSummary.js';
 
 const qtnHeader = document.querySelector(".js-middle-cart-qtn");
 const itemsSummaryQtn = document.getElementById("items-summary-row-qtn");
+const paymentSummaryMoney = document.getElementsByClassName("payment-summary-money");
 
 export function updateOrderSummary() {
-    let paymentSummaryMoney = document.getElementsByClassName("payment-summary-money");
     let cartCost = calcCartCost();
 
     let shippingCost = 0;
