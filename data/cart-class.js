@@ -3,9 +3,12 @@ import { loadCart } from "./cart.js";
 
 let cartQtn = document.body.querySelector(".cart-quantity");
 
-class Cart {	
+class Cart {
+	cartItems;
+	#storageKey;
+
 	constructor(storageKey) {
-		this.storageKey = storageKey;
+		this.#storageKey = storageKey;
 		this.cartItems = this.loadCart(storageKey);
 	}
 
