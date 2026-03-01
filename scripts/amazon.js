@@ -47,6 +47,7 @@ products.forEach((product) => {
         </div>
 
         ${product.clothingExtraInfo()}
+        ${product.applianceExtraInfo()}
 
         <div class="product-spacer"></div>
 
