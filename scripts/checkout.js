@@ -3,6 +3,7 @@ import { products } from "../data/products.js";
 import { getDateString } from "./utils/Math.js";
 import { deliveryOptions } from "../data/deliveryOptions.js";
 import { updateOrderSummary, updateQtn } from "./checkout/orderSummary.js";
+import '../data/backend-practice.js';
 
 let cartSummaryHTML = '';
 

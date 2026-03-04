@@ -1,5 +1,4 @@
 import { updateQtn } from "../scripts/checkout/orderSummary.js";
-import { loadCart } from "./cart.js";
 
 let cartQtn = document.body.querySelector(".cart-quantity");
 
@@ -77,4 +76,4 @@ class Cart {
 	}
 };
 
-const cart = new Cart('cart-oop');
+export const cart = new Cart('cart-oop');
