@@ -1,13 +1,17 @@
 import { addToCart, updateCartQtn} from '../data/cart.js'
 import { products } from '../data/products.js';
+import { loadProducts } from '../data/products.js';
 
 updateCartQtn()
 
 let productGrid = document.body.querySelector(".products-grid");
 
-let productsHTML = ''
+loadProducts(renderProductsGrid);
 
-products.forEach((product) => {
+function renderProductsGrid() {
+    let productsHTML = ''
+
+    products.forEach((product) => {
     productsHTML += `
         <div class="product-container">
         <div class="product-image-container">
@@ -72,3 +76,4 @@ document.querySelectorAll(".js-add-to-cart")
             updateCartQtn();
         })
     })
+}
