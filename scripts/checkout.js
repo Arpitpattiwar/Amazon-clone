@@ -5,11 +5,13 @@ import { deliveryOptions } from "./utils/deliveryOptions.js";
 import { updateOrderSummary, updateQtn } from "./checkout/orderSummary.js";
 import { loadProducts } from "../data/products.js";
 
-Promise.all([
-    loadProducts(),
-]).then(() => {
+loadPage()
+
+async function loadPage() {
+	await loadProducts();
+
 	renderCartSummary();
-})
+}
 
 function renderCartSummary() {
     let cartSummaryHTML = '';
