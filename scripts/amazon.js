@@ -6,7 +6,9 @@ updateCartQtn()
 
 let productGrid = document.body.querySelector(".products-grid");
 
-loadProducts(renderProductsGrid);
+loadProducts().then(() => {
+    renderProductsGrid();
+});
 
 function renderProductsGrid() {
     let productsHTML = ''

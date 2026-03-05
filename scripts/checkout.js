@@ -4,19 +4,9 @@ import { getDateString } from "./utils/Math.js";
 import { deliveryOptions } from "./utils/deliveryOptions.js";
 import { updateOrderSummary, updateQtn } from "./checkout/orderSummary.js";
 import { loadProducts } from "../data/products.js";
-import { loadCart_Backend } from "../data/cart.js";
 
 Promise.all([
-	new Promise((resolve) => {
-    loadProducts(() => {
-    	resolve()
-		});
-	}),
-	new Promise((resolve) => {
-		loadCart_Backend(() => {
-			resolve();
-		})
-	})
+    loadProducts(),
 ]).then(() => {
 	renderCartSummary();
 })
