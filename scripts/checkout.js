@@ -1,7 +1,7 @@
 import { cart, removeFromCart, saveToStorage, updateItemQtn } from "../data/cart.js";
 import { products } from "../data/products.js";
 import { getDateString } from "./utils/Math.js";
-import { deliveryOptions } from "../data/deliveryOptions.js";
+import { deliveryOptions } from "./utils/deliveryOptions.js";
 import { updateOrderSummary, updateQtn } from "./checkout/orderSummary.js";
 import { loadProducts } from "../data/products.js";
 

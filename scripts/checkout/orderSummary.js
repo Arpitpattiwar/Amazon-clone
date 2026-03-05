@@ -1,7 +1,7 @@
 import { calcCartQuantity } from '../../data/cart.js'; 
 import { formatMoney } from '../utils/Math.js';
 import { cart } from '../../data/cart.js';
-import { deliveryOptions } from '../../data/deliveryOptions.js';
+import { deliveryOptions } from '../utils/deliveryOptions.js';
 import { calcCartCost } from './paymentSummary.js';
 
 const qtnHeader = document.querySelector(".js-middle-cart-qtn");
