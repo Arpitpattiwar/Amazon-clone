@@ -772,7 +772,3 @@ export function loadProducts() {
 
   return promise  
 }
-
-loadProducts().then(() => {
-  console.log('Next Step')
-})

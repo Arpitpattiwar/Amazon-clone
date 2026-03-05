@@ -1,6 +1,5 @@
 import { addToCart, updateCartQtn} from '../data/cart.js'
-import { products } from '../data/products.js';
-import { loadProducts } from '../data/products.js';
+import { products, loadProducts } from '../data/products.js';
 
 updateCartQtn()
 
@@ -9,9 +8,13 @@ let productGrid = document.body.querySelector(".products-grid");
 loadPage();
 
 async function loadPage() {
-    await loadProducts();
+    try {
+        await loadProducts();
+        renderProductsGrid();
 
-    renderProductsGrid();
+    } catch (error) {
+        console.log("Unexpected error: ", error)
+    }
 }
 
 function renderProductsGrid() {
