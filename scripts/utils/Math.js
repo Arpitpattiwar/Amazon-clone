@@ -7,6 +7,6 @@ export function formatMoney(num) {
 }
 
 export function getDateString(deliveryOptions,deliveryOption) {
-    const deliveryDate = today.add(deliveryOptions.get(Number(deliveryOption)).deliveryDays, 'days');
+    const deliveryDate = today.add(deliveryOptions.get(String(deliveryOption)).deliveryDays, 'days');
     return deliveryDate.format('dddd, MMMM D');
 }

@@ -8,9 +8,12 @@ import { loadProducts } from "../data/products.js";
 loadPage()
 
 async function loadPage() {
-	await loadProducts();
-
-	renderCartSummary();
+	try {
+		await loadProducts();
+		renderCartSummary();
+	} catch (error) {
+		console.log("Unexpected error", error)
+	}
 }
 
 function renderCartSummary() {
@@ -105,7 +108,7 @@ function renderCartSummary() {
     deliveryOptionButtons.forEach((button) => {
         button.addEventListener('change', (event) => {
             const productId = event.target.name.split("delivery-option-")[1];
-            cart.get(productId).deliveryOptionId = Number(event.target.dataset.deliveryId);
+            cart.get(productId).deliveryOptionId = event.target.dataset.deliveryId;
             
             let itemDeliveryDate = document.querySelector(`.js-delivery-date-${productId}`);
             itemDeliveryDate.textContent = `Delivery date: ${getDateString(deliveryOptions, cart.get(productId).deliveryOptionId)}`

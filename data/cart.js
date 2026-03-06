@@ -15,7 +15,7 @@ export function addToCart(productId) {
 	}else{
 		cart.set(productId, {
 			quantity: Number(qtn), 
-			deliveryOptionId: 1
+			deliveryOptionId: "1"
 		})
 	}
 

@@ -15,7 +15,7 @@ export function updateOrderSummary() {
 
     cart.forEach((productData, productId) => {
         let selectedRadio = document.querySelector(`input[name="delivery-option-${productId}"]:checked`);
-        shippingCost += Number(deliveryOptions.get(Number(selectedRadio.dataset.deliveryId)).price);
+        shippingCost += Number(deliveryOptions.get(selectedRadio.dataset.deliveryId).price);
     })
 
     paymentSummaryMoney[0].textContent = `₨ ${cartCost}`;
