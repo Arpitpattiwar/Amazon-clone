@@ -1,24 +1,27 @@
-import { cart } from "../../data/cart.js";
+import { cart, getCartArray } from "../../data/cart.js";
 import { products } from "../../data/products.js";
-import { deliveryOptions } from "../utils/deliveryOptions.js";
 
-// document.querySelector('.js-place-order').addEventListener('click', async () => {
-// 	let cartArray = getCartArray();
+if (document.querySelector('.js-place-order')) { enableOrderBtn(); }
 
-// 	const response = await fetch('https://supersimplebackend.dev/orders', {
-// 			method: 'POST',
-// 			headers: {
-// 				'Content-Type': 'application/json' 
-// 			},
-// 			body: JSON.stringify({
-// 				cart: cartArray
-// 			})
-// 		})
+function enableOrderBtn() {
+	document.querySelector('.js-place-order').addEventListener('click', async () => {
+	let cartArray = getCartArray();
 
-// 	const order = await response.json();
+	const response = await fetch('https://supersimplebackend.dev/orders', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json' 
+			},
+			body: JSON.stringify({
+				cart: cartArray
+			})
+		})
 
-// 	console.log(order)
-// })
+	const order = await response.json();
+
+	console.log(order)
+})
+}
 
 export function calcCartCost() {
 	let totalCost = 0;

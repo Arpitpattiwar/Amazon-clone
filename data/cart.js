@@ -67,3 +67,7 @@ export function updateItemQtn(productId, qtn) {
 export function updateCartQtn() {
 	cartQtn.textContent = calcCartQuantity();
 }
+
+export function getCartArray() {
+	return Array.from(cart, ([key, value]) => ({ productId: key, ...value }));
+}
