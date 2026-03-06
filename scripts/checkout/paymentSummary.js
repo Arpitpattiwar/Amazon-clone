@@ -22,10 +22,13 @@ function enableOrderBtn() {
 
 				const order = await response.json();
 
-				placeOrder(order);
+				if(!order['errorMessage']){
+					placeOrder(order);
+					window.location.href = 'orders.html';
+				}else{
+					alert('Cart is empty!')
+				}
 
-				window.location.href = 'orders.html';
-				
 			} catch (error) {
 				alert('Unexpected error while placing order!')
 			}
