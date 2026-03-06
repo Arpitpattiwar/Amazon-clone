@@ -1,6 +1,6 @@
 import { cart, getCartArray } from "../../data/cart.js";
 import { products } from "../../data/products.js";
-import { addOrder } from "../../data/orders.js";
+import { placeOrder } from "../../data/orders.js";
 
 if (document.querySelector('.js-place-order')) { enableOrderBtn(); }
 
@@ -22,7 +22,7 @@ function enableOrderBtn() {
 
 				const order = await response.json();
 
-				addOrder(order);
+				placeOrder(order);
 
 				window.location.href = 'orders.html';
 				

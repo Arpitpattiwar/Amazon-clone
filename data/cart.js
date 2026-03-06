@@ -31,7 +31,7 @@ export function saveToStorage() {
 	localStorage.setItem('cart', JSON.stringify(Array.from(cart.entries())));
 }
 
-export function loadCart() {
+function loadCart() {
 	try {
 		if (typeof localStorage === 'undefined') {
 			return new Map();
@@ -70,4 +70,9 @@ export function updateCartQtn() {
 
 export function getCartArray() {
 	return Array.from(cart, ([key, value]) => ({ productId: key, ...value }));
+}
+
+export function deleteCart() {
+	cart.clear();
+	saveToStorage();
 }

@@ -1,8 +1,11 @@
+import { deleteCart } from "./cart.js";
+
 export const orders = JSON.parse(localStorage.getItem('orders')) || [];
 
-export function addOrder(order) {
+export function placeOrder(order) {
     orders.unshift(order);
     saveToStorage();
+    deleteCart();
 }
 
 function saveToStorage() {

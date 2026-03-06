@@ -73,6 +73,15 @@ class Cart {
 
 	updateCartQtn() {
 		cartQtn.textContent = this.calcCartQuantity();
+	};
+
+	getCartArray() {
+		return Array.from(this.cartItems, ([key, value]) => ({ productId: key, ...value }));
+	};
+
+	deleteCart() {
+		this.cartItems.clear();
+		this.saveToStorage();
 	}
 };
 

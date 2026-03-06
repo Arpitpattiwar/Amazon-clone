@@ -68,6 +68,15 @@ function Cart(storageKey) {
 
 		updateCartQtn() {
 			cartQtn.textContent = this.calcCartQuantity();
+		},
+
+		getCartArray() {
+			return Array.from(this.cartItems, ([key, value]) => ({ productId: key, ...value }));
+		},
+
+		deleteCart() {
+			this.cartItems.clear();
+			this.saveToStorage();
 		}
 	};
 
@@ -75,6 +84,3 @@ function Cart(storageKey) {
 }
 
 const cart = Cart('cart-oop');
-const business = Cart('business-cart');
-
-
