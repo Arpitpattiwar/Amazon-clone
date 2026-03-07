@@ -1,9 +1,8 @@
-import { addToCart, updateCartQtn} from '../data/cart.js'
+import { addToCart, calcCartQuantity } from '../data/cart.js'
 import { products, loadProducts } from '../data/products.js';
 
-updateCartQtn()
-
 let productGrid = document.body.querySelector(".products-grid");
+let cartQtn = document.body.querySelector(".cart-quantity");
 
 loadPage();
 
@@ -86,3 +85,9 @@ document.querySelectorAll(".js-add-to-cart")
         })
     })
 }
+
+function updateCartQtn() {
+	cartQtn.textContent = calcCartQuantity();
+}
+
+updateCartQtn();

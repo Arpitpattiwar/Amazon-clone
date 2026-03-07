@@ -1,5 +1,5 @@
 import { cart, removeFromCart, saveToStorage, updateItemQtn } from "../data/cart.js";
-import { products } from "../data/products.js";
+import { getProductById } from "../data/products.js";
 import { getDateString } from './utils/time.js';
 import { deliveryOptions } from "./utils/deliveryOptions.js";
 import { updateOrderSummary, updateQtn } from "./checkout/orderSummary.js";
@@ -20,13 +20,7 @@ function renderCartSummary() {
     let cartSummaryHTML = '';
 
     cart.forEach((productData, key) => {
-        let matchingProduct;
-
-        products.forEach((product) => {
-            if(product.id === key) {
-                matchingProduct = product;
-            }
-        })
+        let matchingProduct = getProductById(key);
 
         cartSummaryHTML += `
             <div class="cart-item-container js-cart-item-container-${matchingProduct.id}">

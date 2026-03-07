@@ -1,5 +1,5 @@
 import { cart, getCartArray } from "../../data/cart.js";
-import { products } from "../../data/products.js";
+import { getProductById } from "../../data/products.js";
 import { placeOrder } from "../../data/orders.js";
 
 if (document.querySelector('.js-place-order')) { enableOrderBtn(); }
@@ -38,13 +38,7 @@ function enableOrderBtn() {
 export function calcCartCost() {
 	let totalCost = 0;
 	cart.forEach((productData, id) => {
-		let matchingProductPrice;
-		products.forEach((product) => {
-			if(product.id == id) {
-				matchingProductPrice = product.price;
-			}
-		})
-
+		let matchingProductPrice = getProductById(id).price;
 		totalCost += matchingProductPrice * productData.quantity;
 	})
 

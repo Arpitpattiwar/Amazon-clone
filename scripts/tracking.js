@@ -1,8 +1,10 @@
 import { getOrderById } from "../data/orders.js";
 import { getProductById, loadProducts } from "../data/products.js";
 import { formatDate } from "./utils/time.js";
+import { calcCartQuantity } from "../data/cart.js";
 
 let orderBox = document.querySelector(".js-order-box");
+let cartQtn = document.body.querySelector(".cart-quantity");
 
 loadPage();
 
@@ -58,3 +60,9 @@ function getHTML(orderId, productId) {
 		</div>
 	`
 }
+
+function updateCartQtn() {
+	cartQtn.textContent = calcCartQuantity();
+}
+
+updateCartQtn();

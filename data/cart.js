@@ -1,11 +1,9 @@
 import { updateQtn } from "../scripts/checkout/orderSummary.js";
 
-let cartQtn = document.body.querySelector(".cart-quantity");
-
 export const cart = loadCart();
 
 export function addToCart(productId) {
-	let qtn = document.getElementById(`qtn-${productId}`).value;
+	let qtn = document.getElementById(`qtn-${productId}`)?.value || 1;
 
 	if(cart.has(productId)){
 		cart.set(productId, {
@@ -62,10 +60,6 @@ export function updateItemQtn(productId, qtn) {
 	cart.get(productId).quantity = qtn;
 	saveToStorage();
 	updateQtn();
-}
-
-export function updateCartQtn() {
-	cartQtn.textContent = calcCartQuantity();
 }
 
 export function getCartArray() {

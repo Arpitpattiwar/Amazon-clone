@@ -1,8 +1,10 @@
 import { orders } from "../data/orders.js";
 import { formatDate } from "./utils/time.js";
-import { products, loadProducts } from "../data/products.js";
+import { getProductById, loadProducts } from "../data/products.js";
+import { addToCart, calcCartQuantity, cart } from "../data/cart.js";
 
 let productGrid = document.querySelector(".orders-grid");
+let cartQtn = document.body.querySelector(".cart-quantity");
 
 loadOrders();
 
@@ -18,6 +20,7 @@ async function loadOrders() {
     productGrid.innerHTML = html;
 
     enableTrackPackageBtn();
+    enableBuyAgainBtn();
 }
 
 function createOrderElement(order) {
@@ -56,13 +59,7 @@ function createOrderElement(order) {
 }
 
 function itemHTML(item, order) {
-    let matchingProduct;
-    
-    products.forEach((product) => {
-        if(product.id == item.productId){
-            matchingProduct = product;
-        }
-    })
+    let matchingProduct = getProductById(item.productId);
     
     return `
         <div class="product-image-container">
@@ -81,7 +78,7 @@ function itemHTML(item, order) {
           </div>
           <button class="buy-again-button button-primary">
             <img class="buy-again-icon" src="images/icons/buy-again.png">
-            <span class="buy-again-message">Buy it again</span>
+            <span class="buy-again-message" data-product-id=${item.productId}>Buy it again</span>
           </button>
         </div>
 
@@ -104,3 +101,19 @@ function enableTrackPackageBtn() {
         });
     });
 }
+
+function enableBuyAgainBtn() {
+    document.querySelectorAll('.buy-again-button').forEach((button) => {
+      button.addEventListener('click', (event) => {
+        const productId = event.target.dataset.productId;
+        addToCart(productId)
+        updateCartQtn()
+      });
+    })
+}
+
+function updateCartQtn() {
+  cartQtn.textContent = calcCartQuantity();
+}
+
+updateCartQtn();
