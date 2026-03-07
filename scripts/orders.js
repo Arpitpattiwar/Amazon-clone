@@ -1,5 +1,5 @@
 import { orders } from "../data/orders.js";
-import { formatTime } from "./utils/time.js";
+import { formatDate } from "./utils/time.js";
 import { products, loadProducts } from "../data/products.js";
 
 let productGrid = document.querySelector(".orders-grid");
@@ -14,9 +14,10 @@ async function loadOrders() {
     orders.forEach((order) => {
         html += createOrderElement(order);
     })
-    console.log(orders)
 
     productGrid.innerHTML = html;
+
+    enableTrackPackageBtn();
 }
 
 function createOrderElement(order) {
@@ -28,11 +29,11 @@ function createOrderElement(order) {
         <div class="order-header-left-section">
             <div class="order-date">
             <div class="order-header-label">Order Placed:</div>
-            <div>${formatTime(order.orderDate)}</div>
+            <div>${formatDate(order.orderDate)}</div>
             </div>
             <div class="order-total">
             <div class="order-header-label">Total:</div>
-            <div>Rs. ${order.totalCostCent}</div>
+            <div>Rs. ${order.totalCostCents}</div>
             </div>
         </div>
 
@@ -44,7 +45,7 @@ function createOrderElement(order) {
 
         <div class="order-details-grid">
             ${order.products.map((item) => {
-                return itemHTML(item);
+                return itemHTML(item, order);
             }).join('')}
         </div>
     </div>
@@ -54,7 +55,7 @@ function createOrderElement(order) {
     return html; 
 }
 
-function itemHTML(item) {
+function itemHTML(item, order) {
     let matchingProduct;
     
     products.forEach((product) => {
@@ -63,8 +64,6 @@ function itemHTML(item) {
         }
     })
     
-    console.log(item);
-
     return `
         <div class="product-image-container">
           <img src="${matchingProduct.image}">
@@ -75,7 +74,7 @@ function itemHTML(item) {
             ${matchingProduct.name}
           </div>
           <div class="product-delivery-date">
-            Arriving on: ${formatTime(item.deliveryDate)}
+            Arriving on: ${formatDate(item.deliveryDate)}
           </div>
           <div class="product-quantity">
             Quantity: ${item.quantity}
@@ -87,11 +86,21 @@ function itemHTML(item) {
         </div>
 
         <div class="product-actions">
-          <a href="tracking.html">
-            <button class="track-package-button button-secondary">
+          <a>
+            <button class="track-package-button button-secondary js-track-package" data-order-id=${order.id} data-product-id=${item.productId}>
               Track package
             </button>
           </a>
         </div>
       `;
+}
+
+function enableTrackPackageBtn() {
+    document.querySelectorAll('.js-track-package').forEach((button) => {
+        button.addEventListener('click', (event) => {
+            const orderId = event.target.dataset.orderId;
+            const productId = event.target.dataset.productId;
+            window.location.href = `tracking.html?orderId=${orderId}&productId=${productId}`;
+        });
+    });
 }

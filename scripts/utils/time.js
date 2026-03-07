@@ -7,7 +7,7 @@ export function getDateString(deliveryOptions, deliveryOption) {
 	return deliveryDate.format('dddd, MMMM D');
 }
 
-export function formatTime(time) {
-	return dayjs(time)
+export function formatDate(date) {
+	return dayjs(date)
 		.format('MMMM D');
 }

@@ -11,3 +11,15 @@ export function placeOrder(order) {
 function saveToStorage() {
     localStorage.setItem('orders', JSON.stringify(orders));
 }
+
+export function getOrderById(orderId) {
+    let matchedOrder;
+
+    orders.forEach(order => {
+        if (order.id === orderId) {
+            matchedOrder = order;
+        }
+    });
+    
+    return matchedOrder || null;
+}

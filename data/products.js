@@ -772,3 +772,7 @@ export function loadProducts() {
 
   return promise  
 }
+
+export function getProductById(productId) {
+  return products.find((product) => product.id === productId);
+}
