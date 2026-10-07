@@ -16,7 +16,7 @@ async function loadOrders() {
     orders.forEach((order) => {
         html += createOrderElement(order);
     })
-
+    ;
     productGrid.innerHTML = html;
 
     enableTrackPackageBtn();
